@@ -1,0 +1,64 @@
+1. Customers 
+Embedded Schema Design:
+
+Rationale: Each customer has a unique address that does not need to be shared with other customers. Embedding the address within the customer document simplifies access and updates.
+
+Example:
+
+{
+    "_id": ObjectId("67683bc3091b856eb9814708"),
+    "customer_id": 1,
+    "name": "Customer 1",
+    "email": "customer1@randle.com",
+    "phone": "222-990-5354",
+    "address": {
+        "street": "Ring Road",
+        "city": "Ibadan",
+        "state": "Oyo"
+    }
+}
+
+2. Products
+Flat Schema Design:
+
+Rationale: Products generally do not have sub-documents or nested data that would benefit from embedding. Each product can be stored as a flat document.
+
+Example:
+
+{
+    "_id": ObjectId(),
+    "product_id": 101,
+    "product_name": "Laptop",
+    "category": "Electronics",
+    "price": 999.99,
+    "stock": 50
+}
+
+
+3. Orders and Order Items
+Referenced Schema Design:
+
+Rationale: Orders often contain multiple order items, and embedding all order items within an order document could lead to large document sizes. Using references allows you to link order items to orders without duplication, maintaining a scalable and normalized structure.
+
+Order Example:
+
+
+{
+    "_id": ObjectId(),
+    "order_id": 5001,
+    "customer_id": 1,
+    "order_date": ISODate("2023-12-01T10:00:00Z"),
+    "status": "Delivered",
+    "delivery_date": ISODate("2023-12-14T10:00:00Z")
+}
+
+Order Item Example:
+
+json
+{
+    "_id": ObjectId(),
+    "order_item_id": 9001,
+    "order_id": 5001,
+    "product_id": 101,
+    "quantity": 2,
+    
